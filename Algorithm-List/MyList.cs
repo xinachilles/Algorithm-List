@@ -7,12 +7,12 @@ namespace Algorithm_List
 {
     class MyNode
     {
-        public int data;
-        public MyNode next;
+        public int Value;
+        public MyNode Next;
         public MyNode() { }
         public MyNode(int value)
         {
-            data = value;
+            Value = value;
         }
 
 
@@ -35,7 +35,7 @@ namespace Algorithm_List
             {
                 MyNode temp = head;
                 int i = 0;
-                while (temp.next != null)
+                while (temp.Next != null)
                 {
                     if (i == index)
                     {
@@ -43,13 +43,13 @@ namespace Algorithm_List
                     }
                     else
                     {
-                        temp = temp.next;
+                        temp = temp.Next;
                         i++;
 
                     }
                     if (i == index)
                     {
-                        temp.data = value;
+                        temp.Value = value;
                     }
                 }
 
@@ -72,16 +72,16 @@ namespace Algorithm_List
             private MyNode TravelList(int data)
             {
                 MyNode temp = head;
-                while (temp.next != null)
+                while (temp.Next != null)
                 {
-                    if (temp.next.data == data)
+                    if (temp.Next.Value == data)
                     {
                         return temp;
 
                     }
                     else
                     {
-                        temp = temp.next;
+                        temp = temp.Next;
                     }
                 }
                 return null;
@@ -92,17 +92,17 @@ namespace Algorithm_List
 
 
 
-            public MyNode FindBeginning()
+        public MyNode FindBeginning()
             {
                 MyNode slow = head;
                 MyNode fast = head;
 
                 /* Find meeting point. This will be LOOP_SIZE - k steps into the
                  * linked list. */
-                while (fast != null && fast.next != null)
+                while (fast != null && fast.Next != null)
                 {
-                    slow = slow.next;
-                    fast = fast.next.next;
+                    slow = slow.Next;
+                    fast = fast.Next.Next;
                     if (slow == fast)
                     { // Collision
                         break;
@@ -110,7 +110,7 @@ namespace Algorithm_List
                 }
 
                 /* Error check - no meeting point, and therefore no loop */
-                if (fast == null || fast.next == null)
+                if (fast == null || fast.Next == null)
                 {
                     return null;
                 }
@@ -121,15 +121,15 @@ namespace Algorithm_List
                 slow = head;
                 while (slow != fast)
                 {
-                    slow = slow.next;
-                    fast = fast.next;
+                    slow = slow.Next;
+                    fast = fast.Next;
                 }
 
                 /* Both now point to the start of the loop. */
                 return fast;
             }
 
-            public int length(LinkedListNode<int> node)
+        public int length(LinkedListNode<int> node)
             {
                 int i = 0;
                 while (node != null)
@@ -143,9 +143,9 @@ namespace Algorithm_List
         private void MyDeleteList(int data)
         {
             // if the head contain the data, delete the head
-            if (head.data == data)
+            if (head.Value == data)
             {
-                head = head.next;
+                head = head.Next;
 
             }
             else
@@ -153,7 +153,7 @@ namespace Algorithm_List
                 MyNode d_node = TravelList(data);
                 if (d_node != null)
                 {
-                    d_node.next = d_node.next.next;
+                    d_node.Next = d_node.Next.Next;
 
                 }
 
@@ -168,19 +168,19 @@ namespace Algorithm_List
             if (head == null)
             {
                 head = new MyNode();
-                head.data = d;
+                head.Value = d;
             }
             else
             {
                 MyNode temp = head;
                 MyNode end = new MyNode();
-                end.data = d;
-                while (temp.next != null)
+                end.Value = d;
+                while (temp.Next != null)
                 {
-                    temp = temp.next;
+                    temp = temp.Next;
                 }
-                temp.next = end;
-                end.next = null;
+                temp.Next = end;
+                end.Next = null;
 
             }
         }
@@ -193,8 +193,8 @@ namespace Algorithm_List
             // n.Clear();
             while (temp != null)
             {
-                n.Add(temp.data);
-                temp = temp.next;
+                n.Add(temp.Value);
+                temp = temp.Next;
 
             }
 
@@ -210,13 +210,168 @@ namespace Algorithm_List
             // n.Clear();
             while (temp != null)
             {
-                n.Add(temp.data);
-                temp = temp.next;
+                n.Add(temp.Value);
+                temp = temp.Next;
 
             }
 
             return n.ToArray();
 
         }
+
+        #region 2.4
+        //Write code to partition a linked list around a value x, such that all nodes less than x
+        //come before all nodes greater than or equal to x.
+        public MyNode Partition(int x)
+        {
+            MyNode beforeStart = null;
+            MyNode beforeEnd = null;
+            MyNode afterStart = null;
+            MyNode afterEnd = null;
+            MyNode node = head;
+
+            while (node != null)
+            {
+
+
+                if (node.Value <= x)
+                {
+
+                    if (beforeStart == null)
+                    {
+
+                        beforeStart = node;
+                        beforeEnd = beforeStart;
+                    }
+                    else
+                    {
+                        beforeEnd.Next = node;
+                        beforeEnd = node;
+
+                    }
+
+                }
+
+                else
+                {
+                    if (afterStart == null)
+                    {
+                        afterStart = node;
+                        afterEnd = afterStart;
+                    }
+                    else
+                    {
+                        afterEnd.Next = node;
+                        afterEnd = node;
+
+                    }
+
+                }
+
+                node = node.Next;
+
+            }
+
+            if (beforeStart != null)
+            {
+                beforeEnd.Next = afterStart;
+                afterEnd.Next = null;
+                return beforeStart;
+            }
+            else
+            {
+                afterEnd.Next = null;
+                return afterStart;
+
+            }
+        }
+        // only use two variable
+        public MyNode Partition2(int x)
+        {
+
+            MyNode node = head;
+            MyNode beforeStart = null;
+            MyNode afterStart = null;
+
+            /* Partition list */
+            while (node != null)
+            {
+                MyNode next = node.Next;
+                if (node.Value < x)
+                {
+                    /* Insert node into start of before list */
+                    node.Next = beforeStart;
+                    beforeStart = node;
+                }
+                else
+                {
+                    /* Insert node into front of after list */
+                    node.Next = afterStart;
+                    afterStart = node;
+                }
+                node = node.Next;
+            }
+
+            /* Merge before list and after list */
+            if (beforeStart == null)
+            {
+                return afterStart;
+            }
+
+            /* Find end of before list, and merge the lists */
+            MyNode before_head = beforeStart;
+            while (beforeStart.Next != null)
+            {
+                beforeStart = beforeStart.Next;
+            }
+            beforeStart.Next = afterStart;
+
+            return before_head;
+        }
+
+
+        #endregion
+
+
+        public bool DeleteNode(MyNode n)
+        {
+            if (n == null || n.Next == null)
+            {
+                return false; // Failure
+            }
+            MyNode next = n.Next;
+            n.Value = next.Value;
+            n.Next = next.Next;
+            return true;
+        }
+
+        //public void DeleteList(ref MyNode node)
+        //{
+
+        //    if (node != null && node.next != null)
+        //    {
+
+        //        MyNode temp = node;
+        //        MyNode perious = null;
+        //        while (temp.next != null)
+        //        {
+        //            temp.data = temp.next.data;
+        //            perious = temp;
+        //            temp = temp.next;
+
+        //        }
+        //        if (perious != null) perious.next = null;
+
+        //    }
+
+        //    if (node != null && node.next == null)
+        //    {
+
+        //        node = null;
+
+        //    }
+
+
+        //}
     }
 }

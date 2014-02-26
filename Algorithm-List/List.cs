@@ -10,7 +10,7 @@ namespace Algorithm_List
         class List
         {
             public List() { }
-          
+            
      
             #region 2.1
             //Write code to remove duplicates from an unsorted linked list.
@@ -75,9 +75,9 @@ namespace Algorithm_List
             #region 2.2
 
             //Implement an algorithm to find the kth to last element of a singly linked list.
-            public int FindKth(int k)
+            public int FindKth(int k,LinkedList<int> l)
             {
-                LinkedListNode<int> node = head;
+                LinkedListNode<int> node = l.First;
                 int value = 0;
                 FindKthNode(node, k, ref value);
                 return value;
@@ -102,10 +102,10 @@ namespace Algorithm_List
 
             }
 
-            public LinkedListNode<int> FindKthNodeWithoutRecursive(int k)
+            public LinkedListNode<int> FindKthNodeWithoutRecursive(int k, LinkedList<int> l)
             {
-                LinkedListNode<int> fast = head;
-                LinkedListNode<int> slow = head;
+                LinkedListNode<int> fast = l.First;
+                LinkedListNode<int> slow = l.First;
 
                 for (int i = 0; i < k - 1; i++)
                 {
@@ -168,160 +168,10 @@ namespace Algorithm_List
             //}
 
 
-            public bool DeleteNode(MyNode n)
-            {
-                if (n == null || n.next == null)
-                {
-                    return false; // Failure
-                }
-                MyNode next = n.next;
-                n.data = next.data;
-                n.next = next.next;
-                return true;
-            }
-
-            //public void DeleteList(ref MyNode node)
-            //{
-
-            //    if (node != null && node.next != null)
-            //    {
-
-            //        MyNode temp = node;
-            //        MyNode perious = null;
-            //        while (temp.next != null)
-            //        {
-            //            temp.data = temp.next.data;
-            //            perious = temp;
-            //            temp = temp.next;
-
-            //        }
-            //        if (perious != null) perious.next = null;
-
-            //    }
-
-            //    if (node != null && node.next == null)
-            //    {
-
-            //        node = null;
-
-            //    }
-
-
-            //}
+       
 
             #endregion
-            #region 2.4
-            //Write code to partition a linked list around a value x, such that all nodes less than x
-            //come before all nodes greater than or equal to x.
-            public LinkedListNode<int> Partition(int x)
-            {
-                LinkedListNode<int> beforeStart = null;
-                LinkedListNode<int> beforeEnd = null;
-                LinkedListNode<int> afterStart = null;
-                LinkedListNode<int> afterEnd = null;
-                LinkedListNode<int> node = head;
-
-                while (node != null)
-                {
-
-
-                    if (node.Value <= x)
-                    {
-
-                        if (beforeStart == null)
-                        {
-
-                            beforeStart = node;
-                            beforeEnd = beforeStart;
-                        }
-                        else
-                        {
-                            beforeEnd.Next = node;
-                            beforeEnd = node;
-
-                        }
-
-                    }
-
-                    else
-                    {
-                        if (afterStart == null)
-                        {
-                            afterStart = node;
-                            afterEnd = afterStart;
-                        }
-                        else
-                        {
-                            afterEnd.Next = node;
-                            afterEnd = node;
-
-                        }
-
-                    }
-
-                    node = node.next;
-
-                }
-
-                if (beforeStart != null)
-                {
-                    beforeEnd.Next = afterStart;
-                    afterEnd.Next = null;
-                    return beforeStart;
-                }
-                else
-                {
-                    afterEnd.Next = null;
-                    return afterStart;
-
-                }
-            }
-            // only use two variable
-            public LinkedListNode<int> Partition2(int x)
-            {
-
-                LinkedListNode<int> node = head;
-                LinkedListNode<int> beforeStart = null;
-                LinkedListNode<int> afterStart = null;
-
-                /* Partition list */
-                while (node != null)
-                {
-                    MyNode next = node.Next;
-                    if (node.Value < x)
-                    {
-                        /* Insert node into start of before list */
-                        node.Next = beforeStart;
-                        beforeStart = node;
-                    }
-                    else
-                    {
-                        /* Insert node into front of after list */
-                        node.Next = afterStart;
-                        afterStart = node;
-                    }
-                    node = Next;
-                }
-
-                /* Merge before list and after list */
-                if (beforeStart == null)
-                {
-                    return afterStart;
-                }
-
-                /* Find end of before list, and merge the lists */
-                MyNode before_head = beforeStart;
-                while (beforeStart.next != null)
-                {
-                    beforeStart = beforeStart.Next;
-                }
-                beforeStart.Next = afterStart;
-
-                return before_head;
-            }
-
-
-            #endregion
+            
             #region 2.5
             //You have two numbers represented by a linked list, where each node contains a
             //single digit. The digits are stored in reverse order, such that the 1 's digit is at the head
@@ -459,6 +309,7 @@ namespace Algorithm_List
                     stack.Push(slow.Value);
                     slow = slow.Next;
                     fast = fast.Next.Next;
+
                 }
 
                 /* Has odd number of elements, so skip the middle element */
@@ -519,9 +370,9 @@ namespace Algorithm_List
                 }
             }
 
-            public bool IsPalindromeWithRecurse(int length)
+            public bool IsPalindromeWithRecurse(int length,LinkedList<int> l)
             {
-                Result p = IsPalindromeRecurse(head, length);
+                Result p = IsPalindromeRecurse(l.First, length);
                 return p.result;
             }
             #endregion
