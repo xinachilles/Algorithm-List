@@ -13,6 +13,7 @@ namespace Algorithm_List
         public MyNode(int value)
         {
             Value = value;
+            Next = null;
         }
 
 
@@ -373,5 +374,73 @@ namespace Algorithm_List
 
 
         //}
+
+        #region leetcode
+        /*
+         Sort a linked list in O(n log n) time using constant space complexity.
+         */
+
+        public void MergeSort(int begin, int end, MyNode head)
+        {
+            int mid = (begin + end) / 2;
+            MergeSort(begin, mid, head);
+            MergeSort(mid + 1, end, head);
+            Merge(begin,mid,end,head); 
+        
+        
+        }
+
+        public void Merge(int begin, int mid, int end, MyNode head)
+        { 
+            int n1 = mid -begin +1;
+            int n2 = end -mid;
+            int[]a1 = new int[n1];
+            int[]a2 = new int[n2];
+            MyNode n = head;
+
+            for (int i = 0; i < n1; i++)
+            {
+                a1[i] = n.Value;
+                n = n.Next;
+            }
+
+            for (int i = 0; i < n2; i++)
+            {
+                a2[i] = n.Value;
+                n = n.Next;
+            }
+
+            int k = 0;
+            int j = 0; 
+
+            for (int i = begin; i < end; i++)
+            {
+                if (k >= a1.Length) {
+                    this[i] = a2[j];
+                    j++;
+                 }
+
+                if (j >= a2.Length)
+                {
+                    this[i] = a1[k];
+                    k++;
+                }
+
+                if (a1[k]> a2[i])
+                {
+                    this[i] = a2[i];
+                    i++;
+                }
+                else{
+                    this[j] =a1[k];
+                    k++;
+                
+                }
+            
+            }
+
+        }
+
+        #endregion
     }
 }
