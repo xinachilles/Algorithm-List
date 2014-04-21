@@ -88,10 +88,10 @@ namespace Algorithm_List
                 return null;
             }
 
+
+
+
             
-
-
-
 
         public MyNode FindBeginning()
             {
@@ -130,7 +130,7 @@ namespace Algorithm_List
                 return fast;
             }
 
-        public int length(LinkedListNode<int> node)
+        public int length(MyNode node)
             {
                 int i = 0;
                 while (node != null)
@@ -375,16 +375,16 @@ namespace Algorithm_List
 
         //}
 
-        #region leetcode
+        #region LeetCode Merge Sort
         /*
          Sort a linked list in O(n log n) time using constant space complexity.
          */
 
-        public void MergeSort(int begin, int end, MyNode head)
+        public void ListMergeSort(int begin, int end, MyNode head)
         {
             int mid = (begin + end) / 2;
-            MergeSort(begin, mid, head);
-            MergeSort(mid + 1, end, head);
+            ListMergeSort(begin, mid, head);
+            ListMergeSort(mid + 1, end, head);
             Merge(begin,mid,end,head); 
         
         
@@ -413,7 +413,7 @@ namespace Algorithm_List
             int k = 0;
             int j = 0; 
 
-            for (int i = begin; i < end; i++)
+            for (int i = begin; i <= end; i++)
             {
                 if (k >= a1.Length) {
                     this[i] = a2[j];
@@ -442,5 +442,47 @@ namespace Algorithm_List
         }
 
         #endregion
+
+        #region LeetCode Insert Sort
+        public void ListInsertSort(MyNode head)
+        {
+
+            for (int i = 0; i < length(head); i++)
+            {
+                int index = i; 
+                while(index >0)
+                {
+                    if (this[index - 1] > this[index])
+                    {
+                        int temp = this[index - 1];
+                        this[index - 1] = this[index];
+                        this[index] = temp;
+
+                    }
+                }
+            }
+        }
+
+
+
+        #endregion
+
+        #region LeetCode Reorder List
+        /*
+        Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+        reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+
+        You must do this in-place without altering the nodes' values.
+
+        For example,
+        Given {1,2,3,4}, reorder it to {1,4,2,3}.
+        */
+        public void ListReorder(MyNode head)
+        { 
+            
+        }
+        #endregion
+
+
     }
 }
