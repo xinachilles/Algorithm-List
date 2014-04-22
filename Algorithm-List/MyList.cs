@@ -19,128 +19,119 @@ namespace Algorithm_List
 
     }
 
-    
+
     class MyList
     {
         public MyNode head;
-        public int this[int index]
+        public MyNode this[int index]
         {
             get
             {
-                int[] arrResult = TravelList();
-                return arrResult[index];
-
-
-            }
-            set
-            {
                 MyNode temp = head;
                 int i = 0;
-                while (temp.Next != null)
+                while (temp != null)
                 {
-                    if (i == index)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        temp = temp.Next;
-                        i++;
+                    if (index == i) { return temp; }
+                    i++;
+                    temp = temp.Next;
 
-                    }
-                    if (i == index)
-                    {
-                        temp.Value = value;
-                    }
                 }
 
+                throw new ArgumentOutOfRangeException("index out of range");
+
+
+
             }
+
 
         }
-               public MyList(int[] n)
-            {
 
-                foreach (var item in n)
+
+
+        public MyList(int[] n)
+        {
+
+            foreach (var item in n)
+            {
+                AppendToTaile(item);
+            }
+        }
+
+
+
+
+        // return the node which its next node contrain the 'data'
+        private MyNode TravelListWithValue(int data)
+        {
+            MyNode temp = head;
+            while (temp.Next != null)
+            {
+                if (temp.Next.Value == data)
                 {
-                    AppendToTaile(item);
+                    return temp;
+
+                }
+                else
+                {
+                    temp = temp.Next;
                 }
             }
-           
+            return null;
+        }
+
+
+    
 
 
 
-            // return the node which its next node contrain the 'data'
-            private MyNode TravelList(int data)
+        public MyNode FindBeginning()
+        {
+            MyNode slow = head;
+            MyNode fast = head;
+
+            /* Find meeting point. This will be LOOP_SIZE - k steps into the
+             * linked list. */
+            while (fast != null && fast.Next != null)
             {
-                MyNode temp = head;
-                while (temp.Next != null)
-                {
-                    if (temp.Next.Value == data)
-                    {
-                        return temp;
-
-                    }
-                    else
-                    {
-                        temp = temp.Next;
-                    }
+                slow = slow.Next;
+                fast = fast.Next.Next;
+                if (slow == fast)
+                { // Collision
+                    break;
                 }
+            }
+
+            /* Error check - no meeting point, and therefore no loop */
+            if (fast == null || fast.Next == null)
+            {
                 return null;
             }
 
-
-
-
-            
-
-        public MyNode FindBeginning()
+            /* Move slow to Head. Keep fast at Meeting Point. Each are k
+            * steps from the Loop Start. If they move at the same pace,
+            * they must meet at Loop Start. */
+            slow = head;
+            while (slow != fast)
             {
-                MyNode slow = head;
-                MyNode fast = head;
-
-                /* Find meeting point. This will be LOOP_SIZE - k steps into the
-                 * linked list. */
-                while (fast != null && fast.Next != null)
-                {
-                    slow = slow.Next;
-                    fast = fast.Next.Next;
-                    if (slow == fast)
-                    { // Collision
-                        break;
-                    }
-                }
-
-                /* Error check - no meeting point, and therefore no loop */
-                if (fast == null || fast.Next == null)
-                {
-                    return null;
-                }
-
-                /* Move slow to Head. Keep fast at Meeting Point. Each are k
-                * steps from the Loop Start. If they move at the same pace,
-                * they must meet at Loop Start. */
-                slow = head;
-                while (slow != fast)
-                {
-                    slow = slow.Next;
-                    fast = fast.Next;
-                }
-
-                /* Both now point to the start of the loop. */
-                return fast;
+                slow = slow.Next;
+                fast = fast.Next;
             }
+
+            /* Both now point to the start of the loop. */
+            return fast;
+        }
 
         public int length(MyNode node)
+        {
+            int i = 0;
+            while (node != null)
             {
-                int i = 0;
-                while (node != null)
-                {
-                    node = node.Next;
-                    i = i + 1;
-                }
-                return i;
+                node = node.Next;
+                i = i + 1;
             }
-        
+            return i;
+        }
+
         private void MyDeleteList(int data)
         {
             // if the head contain the data, delete the head
@@ -151,7 +142,7 @@ namespace Algorithm_List
             }
             else
             {
-                MyNode d_node = TravelList(data);
+                MyNode d_node = TravelListWithValue(data);
                 if (d_node != null)
                 {
                     d_node.Next = d_node.Next.Next;
@@ -385,17 +376,17 @@ namespace Algorithm_List
             int mid = (begin + end) / 2;
             ListMergeSort(begin, mid, head);
             ListMergeSort(mid + 1, end, head);
-            Merge(begin,mid,end,head); 
-        
-        
+            Merge(begin, mid, end, head);
+
+
         }
 
         public void Merge(int begin, int mid, int end, MyNode head)
-        { 
-            int n1 = mid -begin +1;
-            int n2 = end -mid;
-            int[]a1 = new int[n1];
-            int[]a2 = new int[n2];
+        {
+            int n1 = mid - begin + 1;
+            int n2 = end - mid;
+            int[] a1 = new int[n1];
+            int[] a2 = new int[n2];
             MyNode n = head;
 
             for (int i = 0; i < n1; i++)
@@ -411,32 +402,34 @@ namespace Algorithm_List
             }
 
             int k = 0;
-            int j = 0; 
+            int j = 0;
 
             for (int i = begin; i <= end; i++)
             {
-                if (k >= a1.Length) {
-                    this[i] = a2[j];
+                if (k >= a1.Length)
+                {
+                    this[i].Value = a2[j];
                     j++;
-                 }
+                }
 
                 if (j >= a2.Length)
                 {
-                    this[i] = a1[k];
+                    this[i].Value = a1[k];
                     k++;
                 }
 
-                if (a1[k]> a2[i])
+                if (a1[k] > a2[i])
                 {
-                    this[i] = a2[i];
+                    this[i].Value = a2[i];
                     i++;
                 }
-                else{
-                    this[j] =a1[k];
+                else
+                {
+                    this[j].Value = a1[k];
                     k++;
-                
+
                 }
-            
+
             }
 
         }
@@ -449,14 +442,14 @@ namespace Algorithm_List
 
             for (int i = 0; i < length(head); i++)
             {
-                int index = i; 
-                while(index >0)
+                int index = i;
+                while (index > 0)
                 {
-                    if (this[index - 1] > this[index])
+                    if (this[index - 1].Value > this[index].Value)
                     {
-                        int temp = this[index - 1];
-                        this[index - 1] = this[index];
-                        this[index] = temp;
+                        int temp = this[index - 1].Value;
+                        this[index - 1].Value = this[index].Value;
+                        this[index].Value = temp;
 
                     }
                 }
@@ -478,10 +471,27 @@ namespace Algorithm_List
         Given {1,2,3,4}, reorder it to {1,4,2,3}.
         */
         public void ListReorder(MyNode head)
-        { 
-            
+        {
+            for (int i = 0; i < length(head) / 2; i++)
+            {
+                int j = length(head) - 1;
+                this[i].Next = this[j];
+                this[j].Next = this[i + 1];
+
+                j--;
+            }
         }
         #endregion
+
+
+        #region LeetCode Linked List Cycle
+
+        /*
+     Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+    Follow up:
+    Can you solve it without using extra space?
+     */
 
 
     }
