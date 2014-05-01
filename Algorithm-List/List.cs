@@ -6,8 +6,13 @@ using System.Collections;
 
 namespace Algorithm_List
 {
+    public class RandomListNode {
+     public int label;
+     public RandomListNode next, random;
+     public RandomListNode(int x) { this.label = x; }
+    }
 
-    class List
+  public  class List
     {
         public List() { }
 
@@ -422,9 +427,9 @@ namespace Algorithm_List
         #endregion
 
 
- #region
+        #region LeetCode Linked List Cycle Follow up
 
- /**
+        /**
  * Returns the node at the start of a loop in the given circular linked
  * list. A circular list is one in which a node's next pointer points
  * to an earlier node, so as to make a loop in the linked list. For
@@ -479,7 +484,51 @@ namespace Algorithm_List
 
             return loopStartNode;
         }
-    }
+
         #endregion
 
-}
+        #region Copy List with Random Pointer
+
+        /*A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.Return a deep copy of the list.*/
+
+
+
+        public RandomListNode CopyRandomList(RandomListNode head)
+        {
+
+        if (head == null ){return null;}
+            //map <originalNode, newNode>
+        Dictionary <RandomListNode,RandomListNode> mp = new Dictionary<RandomListNode,RandomListNode>();
+        
+        RandomListNode res=new RandomListNode(0);
+        RandomListNode p=head;
+        RandomListNode q=res;
+         
+        while (p!=null){
+            RandomListNode tmp = new RandomListNode(p.label);
+            q.next = tmp;
+            mp[p]=tmp;
+            p=p.next;
+            q=q.next;
+        }
+        p=head;
+        q=res.next;
+        while (p!=null){
+            if (p.random==null){
+                q.random=null;
+            }else{
+                q.random = mp[p.random];
+            }
+            p=p.next;
+            q=q.next;
+        }
+        return res.next;
+    }
+
+        }
+
+        #endregion
+
+    }
+
+
