@@ -483,8 +483,63 @@ namespace Algorithm_List
         }
         #endregion
 
+        #region
+        /*
+                             Reverse a linked list from position m to n. Do it in-place and in one-pass.
 
-    
+                    For example:
+                    Given 1->2->3->4->5->NULL, m = 2 and n = 4,
+
+                    return 1->4->3->2->5->NULL.
+
+                    Note:
+                    Given m, n satisfy the following condition:
+                    1 ≤ m ≤ n ≤ length of list.
+         */
+
+        public MyNode ReverseBetween(MyNode head, int m, int n)
+        {
+            // init m node and n node  
+            MyNode mNode = head;
+            MyNode nNode = head;
+
+            // previous node of node m  
+            MyNode mPreNode = new MyNode(0);
+            mPreNode.Next = head;
+
+            // set up the distance between node m and node n  
+            for (int i = 0; i < n - m; i++) nNode = nNode.Next;
+
+            // locate node m and node n  
+            for (int i = 0; i < m - 1; i++)
+            {
+                mPreNode = mNode;
+                mNode = mNode.Next;
+                nNode = nNode.Next;
+            }
+
+            // check if case of reversing from head  
+            bool fromHead = false;
+            if (mNode == head) fromHead = true;
+
+            // reverse node range  
+            while (mNode != nNode)
+            {
+                MyNode temp = nNode.Next;
+                nNode.Next = mNode;
+                mPreNode.Next = mNode.Next;
+                mNode.Next = temp;
+                mNode = mPreNode.Next;
+            }
+
+            // case of reverse started from head  
+            if (fromHead == true) return nNode;
+
+            // other cases  
+            return head;  
+        }
+        #endregion
+
 
     }
 }
