@@ -80,7 +80,7 @@ namespace Algorithm_List
         }
 
 
-    
+
 
 
 
@@ -301,7 +301,8 @@ namespace Algorithm_List
                     node.Next = afterStart;
                     afterStart = node;
                 }
-                node = node.Next;
+                //node = node.Next;
+                node = next;
             }
 
             /* Merge before list and after list */
@@ -536,10 +537,139 @@ namespace Algorithm_List
             if (fromHead == true) return nNode;
 
             // other cases  
-            return head;  
+            return head;
         }
         #endregion
 
+        #region LeetCode Remove Duplicates from Sorted List
+        /*
+            Given a sorted linked list, delete all duplicates such that each element appear only once.
 
+            For example,
+
+            Given 1->1->2, return 1->2.
+            Given 1->1->2->3->3, return 1->2->3.
+         */
+
+        //public MyNode DeleteDuplicates(MyNode head)
+        //{
+        //    MyNode current = head;
+        //    if (current == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    MyNode afterCurrent = null;
+        //    while (current.Next != null)
+        //    {
+        //        afterCurrent = current.Next;
+        //        if (afterCurrent.Value == current.Value)
+        //        {
+        //            current.Next = afterCurrent.Next;
+        //        }
+        //        current = current.Next;
+        //        if (current == null)
+        //        {
+        //            break;
+        //        }
+        //    }
+
+        //    return head;
+
+        //}
+
+        public MyNode DeleteDuplicates(MyNode head)
+        {
+            if (head == null || head.Next == null)
+                return head;
+
+            MyNode prev = head;
+            MyNode p = head.Next;
+
+            while (p != null)
+            {
+                if (p.Value == prev.Value)
+                {
+                    prev.Next = p.Next;
+                    p = p.Next;
+                    //no change prev
+                }
+                else
+                {
+                    prev = p;
+                    p = p.Next;
+                }
+            }
+
+            return head;
+        }
+        #endregion
+
+        #region LeetCode Remove Duplicates from Sorted List II
+
+        //Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
+        //For example,
+        //Given 1->2->3->3->4->4->5, return 1->2->5.
+        //Given 1->1->1->2->3, return 2->3.
+
+        public MyNode DeleteDuplicates3(MyNode head)
+        {
+            if (head == null)
+                return head;
+            MyNode root = new MyNode(0);
+            MyNode cur = head;
+            MyNode pre = root;
+
+            while (cur != null)
+            {
+                bool isDup = false;
+                while (cur.Next != null && cur.Value == cur.Next.Value)
+                {
+                    isDup = true;
+                    cur = cur.Next;
+                }
+                if (isDup)
+                {
+                    cur = cur.Next;
+                }
+                else
+                {
+                    pre.Next = cur;
+                    pre = cur;
+                    cur = cur.Next;
+                    pre.Next = null;
+
+                }
+            }
+            return root.Next;
+        
+        }
+        #endregion
+
+        #region Remove Duplicates from Sorted Array
+            //        Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.
+
+            //Do not allocate extra space for another array, you must do this in place with constant memory.
+
+            //For example,
+            //Given input array A = [1,1,2],
+
+            //Your function should return length = 2, and A is now [1,2].
+       public void RemoveDuplicates(ref int[] a, ref int n) {
+        
+           HashSet<int> newHash = new HashSet<int>();
+           foreach (int item in a)
+           {
+               if (newHash.Contains(item) == false)
+               {
+                   newHash.Add(item);
+               }   
+           }
+
+           a = newHash.ToArray<int>();
+           n = a.Length;
+          
+    }
+        #endregion
     }
 }
