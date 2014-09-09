@@ -539,6 +539,63 @@ namespace Algorithm_List
             // other cases  
             return head;
         }
+
+        public MyNode ReverseBetweenII(MyNode head, int m, int n)
+        {
+            if (head ==null || m>n )
+            {
+                return null;
+            }
+
+            MyNode mPreNode = head;
+            MyNode nPreNode = head;
+            MyNode node = head; 
+            int i = 0;
+            while (node !=null   )
+            {
+                if (node == null)
+                {
+                    return null;
+                }
+
+                if (i+1 == m)
+                {
+                    mPreNode = node;
+                }
+
+                if (i+1 == n)
+                {
+                    nPreNode = node;
+                    break;
+                }
+
+                i = i + 1;
+                node = node.Next;
+            }
+
+            
+            if (mPreNode == head)
+            {
+                MyNode temp = nPreNode.Next.Next;
+                nPreNode.Next.Next = mPreNode.Next;
+                head = mPreNode.Next;
+                nPreNode.Next = mPreNode.Next;
+                mPreNode.Next = temp;
+                
+            }
+            else {
+                MyNode mNode = mPreNode.Next;
+                MyNode nNode = nPreNode.Next;
+                MyNode nNodeNext = nPreNode.Next.Next;
+
+                mPreNode.Next = nNode;
+                node.Next = mNode.Next;
+                nNode.Next = mNode;
+                mNode = nNodeNext;
+            
+            }
+            return head;
+        }
         #endregion
 
         #region LeetCode Remove Duplicates from Sorted List
