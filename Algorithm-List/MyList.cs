@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Algorithm_List
 {
-    class MyNode
+    public class MyNode
     {
         public int Value;
         public MyNode Next;
@@ -20,7 +20,7 @@ namespace Algorithm_List
     }
 
 
-    class MyList
+   public class MyList
     {
         public MyNode head;
         public MyNode this[int index]
@@ -484,6 +484,44 @@ namespace Algorithm_List
         }
         #endregion
 
+
+        #region Reverse Linked List
+        public MyNode Reverse()
+        {
+            if (head ==null)
+            {
+                return null;
+            }
+            MyNode second = head.Next;
+            MyNode third = second.Next;
+
+            second.Next = head;
+            head.Next = null;
+
+
+            if (third==null)
+            {
+                return head;
+            }
+
+            MyNode currentNode = third;
+            MyNode previousNode = second;
+
+            while (previousNode!= null)
+            {
+                MyNode temp =currentNode.Next;
+                currentNode.Next = previousNode;
+                previousNode = currentNode;
+                currentNode = temp;
+
+            }
+            head = previousNode;
+
+            return head;
+
+        }
+
+        #endregion 
         #region
         /*
                              Reverse a linked list from position m to n. Do it in-place and in one-pass.
